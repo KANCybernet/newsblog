@@ -42,14 +42,14 @@
                                           {{#each data}}
                                           <tr>
                                              <td>{{@index}}</td>
-                                             <td>{{this.image}}</td>
+                                             <td><span class="user_img"><img class="img-responsive rounded" alt="pix" src="/blogImages/{{this.image}}"/></span></td>
                                              <td>{{this.title}}</td>
                                              <td>{{this.name}}</td>
                                              <td>{{this.content}}</td>
                                              <td>{{this.date_created}}</td>
                                              <td>{{this.status}}</td>
-                                             <td></td>
-                                             <td></td>
+                                             <td><a href="edit/{{this._id}}"><i class="fa fa-edit"></i></a></td>
+                                             <td><a  href="edit/{{this._id}}"><i class="fa fa-remove"></i></a></td>
                                           </tr>
                                           {{/each}}
                                        </tbody>
