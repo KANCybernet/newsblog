@@ -102,4 +102,18 @@ router.get('/add-news', function(req, res, next) {
   res.render('admin/add-news');
 });
 
+
+//edit fields
+router
+  .get('/edit',(req,res)=>{
+  createPost.findOne({_id:req.query.id})
+  .then((result)=> {
+    console.log(result);  
+    res.render('admin/edit',{title: "Edit Post"})
+  })
+  .then((err) => console.log(err))
+     
+   
+  })
+
 module.exports = router;
