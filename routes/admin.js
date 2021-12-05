@@ -109,7 +109,7 @@ router
   createPost.findOne({_id:req.query.id})
   .then((result)=> {
     console.log(result);  
-    res.render('admin/edit',{title: "Edit Blog Posts"})
+    res.render('admin/edit',{title: "Edit Blog Post"})
   })
   .then((err) => console.log(err))
      
