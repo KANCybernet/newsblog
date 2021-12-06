@@ -109,12 +109,7 @@ router
   createPost.findOne({_id:req.query.id})
   .then((result)=> {
     console.log(result);
-    var test={
-      person: {
-        firstname: "Yehuda",
-        lastname: "Katz",
-      },
-    } 
+   
     res.render('admin/edit',{person:result,title: "Edit Blog Post"})
   })
   .then((err) => console.log(err))
