@@ -106,11 +106,20 @@ router.get('/add-news', function(req, res, next) {
 //edit fields
 router
   .get('/edit',(req,res)=>{
-  createPost.findOne({_id:req.query.id})
+  createPost.findOne({_id:req.query.id}).lean()
   .then((result)=> {
     console.log(result);
-   
-    res.render('admin/edit',{person:result,title: "Edit Blog Post"})
+var resu={
+  title: 'testing',
+  name: 'john mensa',
+  content: 'hello world ',
+  image: 'Capture.PNG-1638568484577-',
+  status: 'Active',
+  date_created: 'Fri Dec 03 2021 22:54:44 GMT+0100 (West Africa Standard Time)',
+  __v: 0
+}
+console.log(typeof resu);
+    res.render('admin/edit',{data:result,title: "Edit Blog Post", person: resu})
   })
   .then((err) => console.log(err))
      

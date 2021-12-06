@@ -10,18 +10,13 @@
                            </div>
                         </div>
                      </div>
-                     
-      {{person}}
-    {{#with person}}
-      {{title}} {{name}}
-    {{/with}}
-                 
+                          
                 
       <form class="row g-3" action="" method="POST" enctype="multipart/form-data">
-       {{#each person}}                     
+       {{#with data}}                     
   <div class="col-md-6">
     <label for="inputEmail4" class="form-label">Post Title</label>
-    <input type="text" class="form-control" id="inputEmail4" name="title" value="{{this.title}}">
+    <input type="text" class="form-control" id="inputEmail4" name="title" value="{{title}}">
   </div>
   <div class="col-md-6">
     <label for="inputPassword4" class="form-label">Name</label>
@@ -34,7 +29,7 @@
   
   <div class="col-12">
     <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-  </div>{{/each}}
+  </div>{{/with}}
 </form>
 
                     </div>
