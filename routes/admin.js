@@ -108,8 +108,14 @@ router
   .get('/edit',(req,res)=>{
   createPost.findOne({_id:req.query.id})
   .then((result)=> {
-    console.log(result);  
-    res.render('admin/edit',{title: "Edit Blog Post"})
+    console.log(result);
+    var test={
+      person: {
+        firstname: "Yehuda",
+        lastname: "Katz",
+      },
+    } 
+    res.render('admin/edit',{person:result,title: "Edit Blog Post"})
   })
   .then((err) => console.log(err))
      

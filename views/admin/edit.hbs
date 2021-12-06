@@ -6,38 +6,37 @@
                      <div class="row column_title">
                         <div class="col-md-12">
                            <div class="page_title">
-                              <h2>Dashboard</h2>
+                              <h2>{{this.title}}</h2>
                            </div>
                         </div>
                      </div>
                      
-             
-                    
-                    
+      {{person}}
+    {{#with person}}
+      {{title}} {{name}}
+    {{/with}}
+                 
+                
       <form class="row g-3" action="" method="POST" enctype="multipart/form-data">
-                          
+       {{#each person}}                     
   <div class="col-md-6">
     <label for="inputEmail4" class="form-label">Post Title</label>
-    <input type="text" class="form-control" id="inputEmail4" name="title">
+    <input type="text" class="form-control" id="inputEmail4" name="title" value="{{this.title}}">
   </div>
   <div class="col-md-6">
     <label for="inputPassword4" class="form-label">Name</label>
-    <input type="text" class="form-control" id="inputPassword4" name="name">
+    <input type="text" class="form-control" id="inputPassword4" name="name" value="{{name}}">
   </div>
   <div class="col-12">
     <label for="inputAddress" class="form-label">Content Body</label>
-<textarea class="form-control"  rows="7" name="content"> </textarea>
-  </div>
-  <div class="col-12">
-
-  <label for="formFileLg" class="form-label">File Upload</label>
-  <input class="form-control form-control-lg" id="formFileLg" type="file" name="image">
+<textarea class="form-control"  rows="7" name="content">{{content}} </textarea>
   </div>
   
   <div class="col-12">
     <button type="submit" class="btn btn-primary" name="submit">Submit</button>
-  </div>
+  </div>{{/each}}
 </form>
+
                     </div>
                      
                   </div>
