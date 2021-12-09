@@ -117,7 +117,9 @@ router
       if(err)
         res.send(err)
       else
-      res.render('/admin/edit?id='+req.body.id,{response:'Update Published Successfully'})
+      res.render('admin/all-post',{response:'Update Published Successfully'})
+
+     
     })
   })
 
