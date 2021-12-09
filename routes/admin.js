@@ -108,22 +108,17 @@ router
   .get('/edit',(req,res)=>{
   createPost.findOne({_id:req.query.id}).lean()
   .then((result)=> {
-    console.log(result);
-var resu={
-  title: 'testing',
-  name: 'john mensa',
-  content: 'hello world ',
-  image: 'Capture.PNG-1638568484577-',
-  status: 'Active',
-  date_created: 'Fri Dec 03 2021 22:54:44 GMT+0100 (West Africa Standard Time)',
-  __v: 0
-}
-console.log(typeof resu);
-    res.render('admin/edit',{data:result,title: "Edit Blog Post", person: resu})
+    res.render('admin/edit',{data:result,title: "Edit Blog Post"})
   })
-  .then((err) => console.log(err))
-     
-   
+  .catch((err) => console.log(err))
+  })
+  .post('/edit', (req,res) => {
+    createPost.updateOne({_id:req.body.id},{title:req.body.title,name:req.body.name,content:req.body.content},(err,result)=>{
+      if(err)
+        res.send(err)
+      else
+      res.render('/admin/edit?id='+req.body.id,{response:'Update Published Successfully'})
+    })
   })
 
 module.exports = router;

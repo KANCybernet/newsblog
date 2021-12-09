@@ -10,13 +10,16 @@
                            </div>
                         </div>
                      </div>
-                          
+                    {{#with response}}
+<div class='alert alert-danger'>{{response}}</div>
+                    {{/with}}
                 
-      <form class="row g-3" action="" method="POST" enctype="multipart/form-data">
+      <form class="row g-3" action="edit" method="POST">
        {{#with data}}                     
   <div class="col-md-6">
     <label for="inputEmail4" class="form-label">Post Title</label>
     <input type="text" class="form-control" id="inputEmail4" name="title" value="{{title}}">
+    <input type="text" name="id" value="{{_id}}" style="display: none;">
   </div>
   <div class="col-md-6">
     <label for="inputPassword4" class="form-label">Name</label>
