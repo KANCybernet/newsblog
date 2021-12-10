@@ -117,10 +117,16 @@ router
       if(err)
         res.send(err)
       else
-      res.render('admin/all-post',{response:'Update Published Successfully'})
+      res.render('admin/all-post',{response:{success:'Update Published Successfully'}})
 
      
     })
   })
+
+  router
+    .get('/create-account',(req,res)=>{
+      res.render('admin/create-account',{title:'Create Admin Profile'});
+      
+    })
 
 module.exports = router;
