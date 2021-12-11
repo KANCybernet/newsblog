@@ -5,6 +5,8 @@ const mongoose = require ('mongoose');
 const createPost = require ("../schema/create-post");
 const multer = require('multer');
 
+const adminProfile= require ("../schema/admin-account");
+
 const fileStorage= multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/blogImages')
@@ -126,6 +128,29 @@ router
   router
     .get('/create-account',(req,res)=>{
       res.render('admin/create-account',{title:'Create Admin Profile'});
+      
+    })
+    .post('/create-account',(req,res) =>{
+      console.log(req.body)
+
+      if(req.body.pwd !== req.body.pwd2)
+      {
+        res.send("Password do not match")
+      }
+      else{
+      const adminProfileObj = new adminProfile({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.pwd,
+        status: "Active",
+        date_created: new Date()
+
+      })
+
+      adminProfileObj.save()
+        .then((result) => res.render('admin/create-account',{response:{success: "Admin Profile Created"}}))
+        .catch((err) => console.log(err))
+    }
       
     })
 
