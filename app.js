@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const hbs= require('express-handlebars');
 var mongoose = require('mongoose');
+var bcypt = require('bcrypt');
 mongoose.pluralize(null);
 
 const port= 3000;

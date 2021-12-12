@@ -4,6 +4,8 @@ const {check, validationResult}= require("express-validator");
 const mongoose = require ('mongoose');
 const createPost = require ("../schema/create-post");
 const multer = require('multer');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const adminProfile= require ("../schema/admin-account");
 
@@ -138,20 +140,65 @@ router
         res.send("Password do not match")
       }
       else{
-      const adminProfileObj = new adminProfile({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.pwd,
-        status: "Active",
-        date_created: new Date()
+        const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+          // The standard secure default length for RSA keys is 2048 bits
+          modulusLength: 2048,
+        });
 
-      })
+        const encryptedData = crypto.publicEncrypt(
+          {
+            key: publicKey,
+            padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+            oaepHash: "sha256",
+          },
+          // We convert the data string to a buffer using `Buffer.from`
+          Buffer.from(req.body.pwd)
+        );
+res.send(encryptedData.toString("base64"));
 
-      adminProfileObj.save()
-        .then((result) => res.render('admin/create-account',{response:{success: "Admin Profile Created"}}))
-        .catch((err) => console.log(err))
+        // bcrypt.hash(req.body.pwd, 10)
+        //   .then((result)=>{
+        //     console.log(result)
+        //     const adminProfileObj = new adminProfile({
+        //       name: req.body.name,
+        //       email: req.body.email,
+        //       password: result,
+        //       status: "Active",
+        //       date_created: new Date()
+      
+        //     })
+
+        //     adminProfileObj.save()
+        //     .then((result) => res.render('admin/create-account',{response:{success: "Admin Profile Created"}}))
+        //     .catch((err) => console.log(err))
+        //   })
+        //   .catch((err)=> { console.log(err)})
+
+         
     }
       
+    })
+    router
+    .get('/login',(req,res) =>{
+
+      const encryptedData = "hacx2UfIf2yMhPkzKzh0ffJWwHteiS5LE77HIFfjghe6PaF8uj8JciXbsNABtIfpC3L6fiyX6Ks/wXHF+CJZQp6ibiaq7OysxLyXU8scFvgcrgH8gEV7fQ+W460JVuyV84pyW0Ixpi0m/L7ND4XaWC94cbx7JBoO0ZqchIcv05FUd2bwt1N26PEgMGyl7jDD50PHfKryOgOe4dIR+HZx4fyK2o5/fkEkfVrxkjAuza4I2zW/Kde3Uyi2gP82KEY8ChuIcC5AbN3OMaTsiHFB8Y7TqZRZIEalNpZur8bg9s3WPihEnteMEjjvAcJwH7bGuSXSRDKML0sWou0mL8W8Pw==";
+      const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+        // The standard secure default length for RSA keys is 2048 bits
+        modulusLength: 2048,
+      });
+      const decryptedData = crypto.privateDecrypt(
+        {
+          key: privateKey,
+          // In order to decrypt the data, we need to specify the
+          // same hashing function and padding scheme that we used to
+          // encrypt the data in the previous step
+          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+          oaepHash: "sha256",
+        },
+        Buffer.from(encryptedData,"utf8")
+      );
+
+      res.send("decrypted data: ", decryptedData.toString());
     })
 
 module.exports = router;
