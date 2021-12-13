@@ -139,8 +139,17 @@ router
       {
         res.send("Password do not match")
       }
-      else{
+     
 
+      else{
+   const checkEmail= verifyemail(req.body.email)
+   console.log("valid:" + checkEmail);
+   if(checkEmail == true)
+   {
+     res.send("email available")
+   }
+   else
+   {
         bcrypt.hash(req.body.pwd, 10)
           .then((result)=>{
             console.log(result)
@@ -158,7 +167,7 @@ router
             .catch((err) => console.log(err))
           })
           .catch((err)=> { console.log(err)})    
-    }
+    }}
       
     })
     router
@@ -167,5 +176,13 @@ router
       .then((result) =>{ console.log(result)})
       .catch((err) => console.log(err))
      })
+
+     function verifyemail(data)
+     {
+       console.log(data)
+      adminProfile.findOne({email:data}).lean() 
+        .then((result)=> {console.log('true' + result)})
+        .catch((err)=> {return false})
+     }
 
 module.exports = router;
