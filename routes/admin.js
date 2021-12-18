@@ -109,8 +109,9 @@ router.get('/add-news', function(req, res, next) {
 
 //edit fields
 router
-  .get('/edit',(req,res)=>{
-  createPost.findOne({_id:req.query.id}).lean()
+  .get('/edit/:id',(req,res)=>{
+    console.log({error1:req.params.id})
+  createPost.findOne({_id:req.params.id}).lean()
   .then((result)=> {
     res.render('admin/edit',{data:result,title: "Edit Blog Post"})
   })
@@ -142,9 +143,10 @@ router
      
 
       else{
-   const checkEmail= verifyemail(req.body.email)
-   console.log("valid:" + checkEmail);
-   if(checkEmail == true)
+   const checkEmail= async()=>{ const a = await verifyemail(req.body.email); console.log(a)}
+   console.log(checkEmail);
+
+   if(checkEmail === true)
    {
      res.send("email available")
    }
@@ -152,7 +154,6 @@ router
    {
         bcrypt.hash(req.body.pwd, 10)
           .then((result)=>{
-            console.log(result)
             const adminProfileObj = new adminProfile({
               name: req.body.name,
               email: req.body.email,
@@ -179,10 +180,26 @@ router
 
      function verifyemail(data)
      {
-       console.log(data)
-      adminProfile.findOne({email:data}).lean() 
-        .then((result)=> {console.log('true' + result)})
+      adminProfile.findOne({email:data}).lean()
+        .then((result)=> { 
+          result.text();
+        })
+        .then((response) => { return response})
         .catch((err)=> {return false})
      }
+
+
+    const address = adminProfile.findOne({email:"admin@joose.com"})
+  .then((response) => response)
+  .then((user) => {
+    return true;
+  });
+
+const printAddress = async () => {
+  const a = await address;
+  console.log(a);
+};
+
+console.log(printAddress());
 
 module.exports = router;
