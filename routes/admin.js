@@ -90,8 +90,9 @@ console.log(req.file.filename);
   })
   router
     .get('/all-post', (req, res, next)=>{
+      const msg=req.query.msg;
       const allblogpost= createPost.find().lean()
-        .then((result) => res.render('admin/all-post',{title: 'All Post', data: result}))
+        .then((result) => res.render('admin/all-post',{title: 'All Post', success: msg, data: result}))
         .catch((err)=> console.log(err));
       //console.log(allblogpost)
       
@@ -122,7 +123,7 @@ router
       if(err)
         res.send(err)
       else
-      res.render('admin/all-post',{response:{success:'Update Published Successfully'}})
+      res.redirect('/admin/all-post?msg=Update Published Successfully')
 
      
     })
@@ -143,15 +144,16 @@ router
      
 
       else{
-   const checkEmail= async()=>{ const a = await verifyemail(req.body.email); console.log(a)}
-   console.log(checkEmail);
 
-   if(checkEmail === true)
-   {
-     res.send("email available")
-   }
-   else
-   {
+  //  const checkEmail= async()=>{ await verifyemail(req.body.email); console.log(a)}
+  //  console.log(checkEmail);
+
+  //  if(checkEmail === true)
+  //  {
+  //    res.send("email available")
+  //  }
+  //  else
+  //  {
         bcrypt.hash(req.body.pwd, 10)
           .then((result)=>{
             const adminProfileObj = new adminProfile({
@@ -170,7 +172,21 @@ router
           .catch((err)=> { console.log(err)})    
     }}
       
-    })
+    )
+
+    router
+      .get('/delete/:id',(req,res)=>{
+        const id= req.params.id
+
+        createPost.deleteOne({_id:id})
+          .then((result)=>{
+            res.redirect('/admin/all-post?msg=Deleted Successfully')
+          })
+          .catch((err) => console.log(err))
+        
+
+        
+      })
     router
     .get('/login',(req,res) =>{
       bcrypt.compare('1111111','$2b$10$T/EQC9ZLKLHjHvFByOqS0O5qrxueHygtkM9i4/3LBUmaqM7gzu9fC')
@@ -178,28 +194,34 @@ router
       .catch((err) => console.log(err))
      })
 
-     function verifyemail(data)
-     {
-      adminProfile.findOne({email:data}).lean()
-        .then((result)=> { 
-          result.text();
-        })
-        .then((response) => { return response})
-        .catch((err)=> {return false})
-     }
+//      function verifyemail(model,data)
+//      {
+//       model.findOne({email:data}).lean()
+//         .then((result)=> { 
+//         })
+//         .then((response) => { return true})
+//         .catch((err)=> {return false})
+//      }
 
 
-    const address = adminProfile.findOne({email:"admin@joose.com"})
-  .then((response) => response)
-  .then((user) => {
-    return true;
-  });
+//     const address = adminProfile.findOne({email:"admin@joose.com"})
+//   .then((response) => response)
+//   .then((user) => {
+//     return user;
+//   });
 
-const printAddress = async () => {
-  const a = await address;
-  console.log(a);
-};
+//   async function getdata(data)
+//   { 
+//     await adminProfile.findOne({email:data})
+//   }
+ 
+// const printAddress = async () => {
+//   const a = await address;
+//   return a;
+// };
 
-console.log(printAddress());
+// let b;
+// (async () => b = await printAddress())();
+// console.log(b)
 
 module.exports = router;

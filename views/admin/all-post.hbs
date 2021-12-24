@@ -10,10 +10,10 @@
                            </div>
                         </div>
                      </div>
-                {{#with response}}      
+               {{#if success}}      
 <div class='alert alert-success text-center'>{{success}}</div>
+               {{/if}}
 
-{{/with}}
                    
                      
                     <div class="row column">
@@ -53,7 +53,7 @@
                                              <td>{{this.date_created}}</td>
                                              <td>{{this.status}}</td>
                                              <td><a href="edit/{{this._id}}"><i class="fa fa-edit"></i></a></td>
-                                             <td><a  href="edit?id={{this._id}}"><i class="fa fa-remove"></i></a></td>
+                                             <td><a  href="delete/{{this._id}}"><i class="fa fa-remove"></i></a></td>
                                           </tr>
                                           {{/each}}
                                        </tbody>
