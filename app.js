@@ -3,7 +3,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const hbs= require('express-handlebars');
+var expHBS  = require('express-handlebars');
+
+var hbs  = expHBS.create({
+  extname: 'hbs',
+  defaultLayout: false,
+  layoutsDir: path.join(__dirname,'views/layout'),
+  helpers: {
+    upperCase: function (aString) {
+      return aString.toUpperCase()
+    }
+  }
+})
 var mongoose = require('mongoose');
 var bcypt = require('bcrypt');
 mongoose.pluralize(null);
@@ -21,10 +32,11 @@ var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
 
-app.engine('.hbs', hbs({ extname: '.hbs', defaultLayout: false }));
-app.set('view engine', '.hbs');
+
+app.engine('hbs',hbs.engine)
+app.set('view engine', 'hbs');
+
 
 app.use(logger('dev'));
 app.use(express.json());

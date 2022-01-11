@@ -64,7 +64,7 @@ router
    (req,res, next)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log(errors);
+     
       res.render('admin/create-post',{msg: errors.array()});
     }
     else{
@@ -78,7 +78,7 @@ router
         status : 'Active',
         date_created: new Date()
       });
-console.log(req.file.filename);
+//console.log(req.file.filename);
       blogPost.save()
       .then((result) => res.render('admin/create-post',{response:'Blog Post Published Successfully'}))
       .catch((err) => console.log (err))
@@ -111,7 +111,6 @@ router.get('/add-news', function(req, res, next) {
 //edit fields
 router
   .get('/edit/:id',(req,res)=>{
-    console.log({error1:req.params.id})
   createPost.findOne({_id:req.params.id}).lean()
   .then((result)=> {
     res.render('admin/edit',{data:result,title: "Edit Blog Post"})
