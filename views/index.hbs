@@ -44,6 +44,8 @@
                     <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
                         <div class="page-wrapper">
                             <div class="blog-custom-build">
+                                 {{count}}
+                          
                             
                             {{#each data}}
                                 <div class="blog-box wow fadeIn">
@@ -65,12 +67,12 @@
                                                 <li><a href="#" class="gp-button btn btn-primary"><i class="fa fa-google-plus"></i></a></li>
                                             </ul>
                                         </div><!-- end post-sharing -->
-                                        <h4><a href="view-details/{{this._id}}" title="">{{this.title}}</a></h4>
-                                        <p>{{this.content}}</p>
+                                        <h4><a href="view-details/{{test._id}}" title="">{{test.title}}</a></h4>
+                                        <p>{{test.content}}</p>
                                         <small><a href="#" title="">Blog Post</a></small>
-                                        <small><a href="/view-details/{{this._id}}" title="">{{this.date_created}}</a></small>
+                                        <small><a href="/view-details/{{this._id}}" title="">{{test.date_created}}</a></small>
                                         <small><a href="#" title="">by Admin</a></small>
-                                        <small><a href="#" title=""><i class="fa fa-eye"></i> 2291</a></small>
+                                        <small><a href="#" title=""><i class="fa fa-eye"></i> {{this.count}}</a></small>
                                     </div><!-- end meta -->
                                 </div><!-- end blog-box -->
 
@@ -182,6 +184,7 @@
                     <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
                         <div class="widget">
                             <h2 class="widget-title">Recent Posts</h2>
+                            <h3>Deboski Is  a Big Grand Mummy</h3>
                             <div class="blog-list-widget">
                                 <div class="list-group">
                                     <a href="marketing-single.html" class="list-group-item list-group-item-action flex-column align-items-start">
@@ -303,5 +306,7 @@
     <script src="js/animate.js"></script>
     <script src="js/custom.js"></script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.1/jquery.twbsPagination.min.js"></script>
 </body>
-</>

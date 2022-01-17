@@ -1,8 +1,8 @@
 
-var expHBS  = require('express-handlebars');
-var express = require('express');
-var app = express();
+  var help= {
+    upperCase: function (aString) {
+      return aString.toUpperCase()
+    }
+  }
 
-expHBS.registerHelper('loud', function (aString) {
-  return aString.toUpperCase()
-})
+module.export= help;

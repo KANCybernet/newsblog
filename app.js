@@ -5,14 +5,31 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expHBS  = require('express-handlebars');
 
+
 var hbs  = expHBS.create({
   extname: 'hbs',
   defaultLayout: false,
   layoutsDir: path.join(__dirname,'views/layout'),
   helpers: {
     upperCase: function (aString) {
-      return aString.toUpperCase()
+  return aString.charAt(0).toUpperCase() + aString.slice(1);
+    },
+    incrementByOne:(data)=> {
+      return data + 1;
+    },
+    list: (data,options)=>{
+      var obj=[];
+      for(var i= 0; i < data.length; i++)
+      {
+        if(i < 4)
+        {
+          console.log(i)
+          obj.push(options.fn(data[i]));
+        } 
+      }
+      return obj
     }
+   
   }
 })
 var mongoose = require('mongoose');
