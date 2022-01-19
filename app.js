@@ -28,6 +28,16 @@ var hbs  = expHBS.create({
         } 
       }
       return obj
+    },
+    pagination:(count,options)=>{
+        var obj=[]
+        var page =0
+        for(var i=0; i < count; i+=3)
+        { 
+          page += 1
+      obj.push("<li class='page-item'><a class='page-link' href='?page="+page+"'>"+page+"</a></li>");
+        }
+        return obj
     }
    
   }
