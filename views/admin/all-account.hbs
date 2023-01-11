@@ -1,0 +1,46 @@
+{{> admin/header}}
+{{> admin/nav}}
+               <!-- dashboard inner -->
+               <div class="midde_cont">
+                  <div class="container-fluid">
+                     <div class="row column_title">
+                        <div class="col-md-12">
+                           <div class="page_title">
+                              <h2>{{this.title}}</h2>
+                           </div>
+                        </div>
+                     </div>
+                  {{#if success}}      
+<div class='alert alert-success text-center'>{{success}}</div>
+               {{/if}}
+                
+      <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Status</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each result}}
+    <tr>
+      <th scope="row">{{incrementByOne @index}}</th>
+      <td>{{name}}</td>
+      <td>{{email}}</td>
+      <td><label class="label btn-primary">{{status}}</label></td>
+      <td><a href="remove-account?id={{_id}}"><i class="fa-sharp fa-solid fa-xmark"></i></a></td>
+    </tr>
+    {{/each}}
+  
+  </tbody>
+</table>
+
+                    </div>
+                     
+                  </div>
+                  <!-- footer -->
+               {{> admin/footer}}

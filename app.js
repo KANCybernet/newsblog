@@ -7,19 +7,41 @@ var expHBS = require('express-handlebars');
 var helper = require('./helpers/helpers.js');
 var mongoose = require('mongoose');
 var bcypt = require('bcrypt');
+var app = express();
+
+
 mongoose.pluralize(null);
 
-const port = 4000;
+const port = 5000;
 const mongodbUrl = "mongodb+srv://blog:blog12345@blog.jknee.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 mongoose.connect('mongodb://localhost/blog' || mongodbUrl, { useUnifiedTopology: true, useNewUrlParser: true })
     .then((result) =>
         app.listen(port, () => console.log("Server started on port:" + port)))
     .catch((err) => console.log("failed to connect"));
 
+
+    const session = require('express-session');
+    app.use(session({
+      secret: "qEas5ns3gxl41G",
+      cookie: { maxAge: 86400000, secure: false },
+      resave: false,
+      saveUninitialized: false
+    }));
+    const passport = require('passport')
+    const pass_config = require('./passport-login')
+    
+    
+
+    app.use(passport.authenticate('session'));
+    app.use(passport.initialize())
+    app.use(passport.session());
+
+
+
 var homeRouter = require('./routes/home');
 var adminRouter = require('./routes/admin');
 
-var app = express();
+
 var hbs = expHBS.create({
     extname: 'hbs',
     defaultLayout: false,

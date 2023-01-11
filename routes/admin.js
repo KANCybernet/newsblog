@@ -6,8 +6,13 @@ const createPost = require("../schema/create-post");
 const multer = require('multer');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-
+var passport = require('passport')
+const auth= require('./auth')
+var pass_local = require('../passport-login')
 const adminProfile = require("../schema/admin-account");
+const passportLocal = require('passport-local')
+
+
 
 const fileStorage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -171,6 +176,21 @@ router
 
     )
 
+    router
+        .get('/all-account',async (req, res)=>{
+            const msg=req.query.msg
+            let data= await adminProfile.find().lean()
+            console.log(data[0]['name'])
+            res.render('admin/all-account',{title:'All Accounts',result:data,success:msg})
+        })
+        .get('/remove-account', (req, res)=>{
+            adminProfile.deleteOne({_id:req.query.id})
+            .then((result)=>{
+                res.redirect('/admin/all-account?msg=Account Successfully Removed')
+            })
+            .catch((error)=> console.log(error))
+            console.log(req.query.id)
+        })
 router
     .get('/delete/:id', (req, res) => {
         const id = req.params.id
@@ -183,14 +203,72 @@ router
 
 
 
-    })
+    });
+
+    // This route processes the users data ans returns response
+passport.use(new passportLocal.Strategy ({
+  usernameField: 'useremail'
+},  (useremail, pwd, done) =>{
+
+  adminProfile.find({email:useremail}).lean()
+  .then((result)=>{
+    done(null, data[0]['email'])
+
+     console.log(result)
+  })
+  .catch((err)=>{
+    done(null, false,{message: 'Invalid request'})
+      console.log('Not Found'+err)
+  })
+
+    // try{
+    //   let data= await adminProfile.find({email:useremail}).lean()
+    //   console.log(data[0])
+    //   if(data[0].length > 0)
+    //   {
+    //     let pwd = await bcrypt.compare(pwd,data[0][password])
+    //     if(pwd)
+    //     {
+    //     done(null, data)
+    //   }}
+    //   else{
+    //     done(null, false,{message: 'Invalid request'})
+    //   }
+    // }
+    // catch(error){
+    //   done({error: 'Invalid request'})
+    // }
+
+}))
+
+
+// serialize and deserialize add the users data to a creation which can be created and persistantly made available across app.
+passport.serializeUser(function(user, cb) {
+ 
+  process.nextTick(function(req,res) {
+    cb(null, user);
+  });
+});
+
+passport.deserializeUser(function(user, cb) {
+  console.log(user)
+  process.nextTick(function() {
+    console.log(user)
+    return cb(null, user);
+  });
+});
 router
     .get('/login', (req, res) => {
-        // bcrypt.compare('1111111','$2b$10$T/EQC9ZLKLHjHvFByOqS0O5qrxueHygtkM9i4/3LBUmaqM7gzu9fC')
-        // .then((result) =>{ console.log(result)})
-        // .catch((err) => console.log(err))
         res.render('admin/login', { title: "Admin Login" })
     })
+    .post('/', 
+        passport.authenticate('local', { failureRedirect: '/login' }),
+        function(req, res) {
+          res.redirect('/');
+        });
+
+
+      
 
 //      function verifyemail(model,data)
 //      {

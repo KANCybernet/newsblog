@@ -1,30 +1,29 @@
-var express = require('express')
-var passport = require('passport')
-var localStrategy = require('passport-local')
-var bcrypt = require('bcrypt')
-const adminProfile= require ("../schema/admin-account");
+const LocalStrategy = require('passport-local').Strategy
+const bcrypt = require('bcrypt')
 
+function initialize(passport, getUserByEmail, getUserById) {
+  const authenticateUser = async (email, password, done) => {
+    const user = getUserByEmail(email)
+    if (user == null) {
+      return done(null, false, { message: 'No user with that email' })
+    }
 
-passport.use(new LocalStrategy(function verify(email, pwd, cb) {
-    createPost.findOne({email:email}).lean()
-    .then((result)=> {return cb(null, false, { message: 'Incorrect username or password.' }) })
-    .catch((err) => {return cb(err) })
+    try {
+      if (await bcrypt.compare(password, user.password)) {
+        return done(null, user)
+      } else {
+        return done(null, false, { message: 'Password incorrect' })
+      }
+    } catch (e) {
+      return done(e)
+    }
+  }
 
-    // db.get('SELECT rowid AS id, * FROM users WHERE username = ?', [ username ], function(err, row) {
-    //   if (err) { return cb(err); }
-    //   if (!row) { return cb(null, false, { message: 'Incorrect username or password.' }); }
-  
-    //   crypto.pbkdf2(password, row.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
-    //     if (err) { return cb(err); }
-    //     if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
-    //       return cb(null, false, { message: 'Incorrect username or password.' });
-    //     }
-    //     return cb(null, row);
-    //   });
-    // });
-  }));
+  passport.use(new LocalStrategy({ usernameField: 'email' }, authenticateUser))
+  passport.serializeUser((user, done) => done(null, user.id))
+  passport.deserializeUser((id, done) => {
+    return done(null, getUserById(id))
+  })
+}
 
-  router.post('/login/password', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login'
-  }));
+module.exports = initialize

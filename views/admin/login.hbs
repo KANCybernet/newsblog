@@ -4,7 +4,7 @@
                <div class="midde_cont">
                   <div class="container-fluid">
                      <div class="row column_title">
-                        <div class="col-md-12">
+                        <div class="col-md-16">
                            <div class="page_title">
                               <h2>{{this.title}}</h2>
                            </div>
@@ -14,16 +14,16 @@
                       <div class='alert alert-success text-center'>{{success}}</div>
                   {{/with}}
                 
-      <form class="row g-3" action="" method="POST">
- 
-  <div class="col-md-6">
+      <form class="row g-3 col-md-10" action="login" method="POST">
+ {{message}}
+  <div class="col-md-12">
     <label for="inputPassword4" class="form-label">Email</label>
-    <input type="email" class="form-control" id="inputPassword4" name="email" value="">
+    <input type="email" class="form-control" placeholder="Enter Email" id="inputPassword4" name="useremail" value="">
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-12">
     <label for="inputPassword4" class="form-label">Password</label>
-    <input type="password" class="form-control" id="inputPassword4" name="pwd" value="">
+    <input type="password" class="form-control" id="inputPassword4" placeholder="Enter Password" name="pwd" value="">
   </div>
    
   <div class="col-md-6">
